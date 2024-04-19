@@ -754,14 +754,15 @@ public class ProcessControllerTests {
         af.setFileNumber("A");
 
         var bi = new BanInfoType();
-        bi.setActionCd("A");
-        bi.setBanType("A");
-        bi.setOrderedDate(Instant.now());
+        bi.setBanStatusCd("A");
+        bi.setBanStatusCd("A");
+        bi.setBanStatusComment("A");
+        bi.setBanStatusDate("A");
         bi.setBanStatuteId("A");
-        bi.setBanOtherStatuteDsc("A");
-        bi.setExpiredDate(Instant.now());
-        bi.setBanCommentText("A");
-        bi.setAcprId("A");
+        bi.setBanTypeCd("A");
+
+        bt.getBanInfo().add(bi);
+        bt.getApplyToFileBan().add(af);
 
         bt.getBanInfo().add(bi);
         bt.getApplyToFileBan().add(af);

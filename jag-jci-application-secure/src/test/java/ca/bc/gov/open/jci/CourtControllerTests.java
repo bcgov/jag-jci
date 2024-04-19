@@ -3,6 +3,7 @@ package ca.bc.gov.open.jci;
 import static org.mockito.Mockito.when;
 
 import ca.bc.gov.open.jci.controllers.CourtController;
+import ca.bc.gov.open.jci.court.secure.one.BanStatus;
 import ca.bc.gov.open.jci.court.secure.one.GetCrtListSecure;
 import ca.bc.gov.open.jci.court.secure.one.GetCrtListSecureResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -157,16 +158,25 @@ public class CourtControllerTests {
 
         crl.getAppearanceCount().add(ac);
 
-        var bn = new ca.bc.gov.open.jci.court.secure.one.Bans();
-        bn.setBanTypeCd("A");
-        bn.setBanTypeDescription("A");
-        bn.setBanTypeAct("A");
-        bn.setBanTypeSection("A");
-        bn.setBanTypeSubSection("A");
-        bn.setBanStatuteId("A");
-        bn.setBanCommentText("A");
-        bn.setBanAcprId("A");
-        crl.getBans().add(bn);
+        var bt = new ca.bc.gov.open.jci.court.secure.one.Bans();
+        bt.setBanTypeCd("A");
+        bt.setBanTypeDescription("A");
+        bt.setBanTypeAct("A");
+        bt.setBanTypeSection("A");
+        bt.setBanTypeSubSection("A");
+        bt.setBanStatuteId("A");
+        bt.setBanTypeParagraph("A");
+        bt.setBanTypeSubParagraph("A");
+        bt.setBanTypeShortDescription("A");
+        bt.setBanTypeShortDescription("A");
+
+        BanStatus bs = new ca.bc.gov.open.jci.court.secure.one.BanStatus();
+        bs.setBanCommentText("A");
+        bs.setBanStatusCd("A");
+        bs.setBanStatusDate(Instant.now());
+        bs.setBanStatusDsc("A");
+        bt.getBanStatus().add(bs);
+        crl.getBans().add(bt);
 
         var bov = new ca.bc.gov.open.jci.court.secure.one.BailOrderToVary();
         bov.setFormTypeCd("A");

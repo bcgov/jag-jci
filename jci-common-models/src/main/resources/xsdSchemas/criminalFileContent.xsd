@@ -69,13 +69,24 @@
         <xsd:sequence>
             <xsd:element name="BanTypeCd"  type="xsd:string"/>
             <xsd:element name="BanTypeDescription"  type="xsd:string"/>
-            <xsd:element name="BanTypeAct"  type="xsd:string"/>
-            <xsd:element name="BanTypeSection"  type="xsd:string"/>
-            <xsd:element name="BanTypeSubSection"  type="xsd:string"/>
-            <xsd:element name="BanStatuteId"  type="xsd:string" minOccurs="0"/>
-            <xsd:element name="BanCommentText"  type="xsd:string" minOccurs="0"/>
-            <xsd:element name="BanOrderedDate"  type="xsd:dateTime"/>
-            <xsd:element name="BanSeqNo"  type="xsd:string"/>
+            <xsd:element name="BanTypeAct"  nillable="true" type="xsd:string"/>
+            <xsd:element name="BanTypeSection" nillable="true" type="xsd:string"/>
+            <xsd:element name="BanTypeSubSection" nillable="true" type="xsd:string"/>
+            <xsd:element name="BanTypeParagraph" nillable="true" type="xsd:string" />
+            <xsd:element name="BanTypeSubParagraph" nillable="true" type="xsd:string" />
+            <xsd:element name="BanTypeShortDescription" nillable="true" type="xsd:string"/>
+            <xsd:element name="BanStatuteId" nillable="true" type="xsd:string"/>
+            <xsd:element name="BanAcprSeqNo" type="xsd:string"/>
+            <xsd:element name="BanStatus" type="tns:BanStatus" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="BanStatus">
+        <xsd:sequence>
+            <xsd:element name="BanStatusDate" type="xsd:dateTime"/>
+            <xsd:element name="BanStatusCd" type="xsd:string"/>
+            <xsd:element name="BanStatusDsc" type="xsd:string" />
+            <xsd:element name="BanCommentText" nillable="true" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
 

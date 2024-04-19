@@ -65,17 +65,29 @@
             </xsd:complexType>
             <xsd:complexType name="BanTypes">
                 <xsd:sequence>
-                    <xsd:element name="BanTypeCd" form="qualified" type="xsd:string"/>
-                    <xsd:element name="BanTypeDescription" form="qualified" type="xsd:string"/>
-                    <xsd:element name="BanTypeAct" form="qualified" type="xsd:string"/>
-                    <xsd:element name="BanTypeSection" form="qualified" type="xsd:string"/>
-                    <xsd:element name="BanTypeSubSection" form="qualified" type="xsd:string"/>
-                    <xsd:element name="BanStatuteId" form="qualified" type="xsd:string" minOccurs="0"/>
-                    <xsd:element name="BanCommentText" form="qualified" type="xsd:string" minOccurs="0"/>
-                    <xsd:element name="BanOrderedDate" form="qualified" type="xsd:string"/>
-                    <xsd:element name="BanSeqNo" form="qualified" type="xsd:string"/>
+                    <xsd:element name="BanTypeCd"  type="xsd:string"/>
+                    <xsd:element name="BanTypeDescription"  type="xsd:string"/>
+                    <xsd:element name="BanTypeAct"  nillable="true" type="xsd:string"/>
+                    <xsd:element name="BanTypeSection" nillable="true" type="xsd:string"/>
+                    <xsd:element name="BanTypeSubSection" nillable="true" type="xsd:string"/>
+                    <xsd:element name="BanTypeParagraph" nillable="true" type="xsd:string" />
+                    <xsd:element name="BanTypeSubParagraph" nillable="true" type="xsd:string" />
+                    <xsd:element name="BanTypeShortDescription" nillable="true" type="xsd:string"/>
+                    <xsd:element name="BanStatuteId" nillable="true" type="xsd:string"/>
+                    <xsd:element name="BanAcprSeqNo" type="xsd:string"/>
+                    <xsd:element name="BanStatus" type="tns:BanStatus" minOccurs="0" maxOccurs="unbounded"/>
                 </xsd:sequence>
             </xsd:complexType>
+
+            <xsd:complexType name="BanStatus">
+                <xsd:sequence>
+                    <xsd:element name="BanStatusDate" type="xsd:dateTime"/>
+                    <xsd:element name="BanStatusCd" type="xsd:string"/>
+                    <xsd:element name="BanStatusDsc" type="xsd:string" />
+                    <xsd:element name="BanCommentText" nillable="true" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
             <xsd:complexType name="ProtectionOrderType">
                 <xsd:sequence>
                     <xsd:element name="POROrderIssueDate" form="qualified" type="xsd:string"/>

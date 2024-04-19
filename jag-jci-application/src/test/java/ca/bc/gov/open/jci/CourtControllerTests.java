@@ -137,16 +137,25 @@ public class CourtControllerTests {
 
         crl.getAppearanceCount().add(ac);
 
-        var bn = new Bans();
-        bn.setBanTypeCd("A");
-        bn.setBanTypeDescription("A");
-        bn.setBanTypeAct("A");
-        bn.setBanTypeSection("A");
-        bn.setBanTypeSubSection("A");
-        bn.setBanStatuteId("A");
-        bn.setBanCommentText("A");
-        bn.setBanAcprId("A");
-        crl.getBans().add(bn);
+        var bt = new Bans();
+        bt.setBanTypeCd("A");
+        bt.setBanTypeDescription("A");
+        bt.setBanTypeAct("A");
+        bt.setBanTypeSection("A");
+        bt.setBanTypeSubSection("A");
+        bt.setBanStatuteId("A");
+        bt.setBanTypeParagraph("A");
+        bt.setBanTypeSubParagraph("A");
+        bt.setBanTypeShortDescription("A");
+        bt.setBanTypeShortDescription("A");
+
+        BanStatus bs = new BanStatus();
+        bs.setBanCommentText("A");
+        bs.setBanStatusCd("A");
+        bs.setBanStatusDate(Instant.now());
+        bs.setBanStatusDsc("A");
+        bt.getBanStatus().add(bs);
+        crl.getBans().add(bt);
 
         var bov = new BailOrderToVary();
         bov.setFormTypeCd("A");
