@@ -98,17 +98,25 @@ public class FileControllerTests {
         wt.setWarrantDate(Instant.now());
         ac.getArrestWarrant().add(wt);
 
-        BanTypes bt = new BanTypes();
-        bt.setBanTypeCd("A");
-        bt.setBanTypeDescription("A");
-        bt.setBanTypeAct("A");
-        bt.setBanTypeSection("A");
-        bt.setBanTypeSubSection("A");
-        bt.setBanStatuteId("A");
-        bt.setBanCommentText("A");
-        bt.setBanOrderedDate(Instant.now());
-        bt.setBanSeqNo("A");
-        ac.getBan().add(bt);
+        BanTypes bn = new BanTypes();
+        bn.setBanTypeCd("A");
+        bn.setBanTypeDescription("A");
+        bn.setBanTypeDescription("A");
+        bn.setBanTypeAct("A");
+        bn.setBanTypeSection("A");
+        bn.setBanTypeSubSection("A");
+        bn.setBanTypeParagraph("A");
+        bn.setBanTypeSubParagraph("A");
+        bn.setBanTypeShortDescription("A");
+        bn.setBanStatuteId("A");
+        bn.setBanAcprSeqNo("A");
+        BanStatus bs = new BanStatus();
+        bs.setBanStatusDate(Instant.now());
+        bs.setBanStatusCd("A");
+        bs.setBanStatusDsc("A");
+        bs.setBanCommentText("A");
+        bn.getBanStatus().add(bs);
+        ac.getBan().add(bn);
 
         ProtectionOrderType pt = new ProtectionOrderType();
         pt.setPOROrderIssueDate(Instant.now());
