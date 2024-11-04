@@ -1,0 +1,179 @@
+# This is the main workflow that creates a new image and push to Openshift image stream which in turn triggers the deployment
+
+name: Main - Build jag-jci Image and Push to Openshift Registry for Dev Deployment
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'App Name (jag-jci-application)'
+        required: true
+        default: 'jag-jci-application'
+      env:
+        type: choice
+        description: Image Target environment
+        options: 
+        - dev    
+        required: true
+        default: 'dev'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-push-image:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env }}
+    env:
+      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+      BASIC_AUTH_PASS: ${{ secrets.BASIC_AUTH_PASS }}
+      GENERIC_AGENCY_ID: ${{secrets.GENERIC_AGENCY_ID}}
+      GENERIC_PART_ID: ${{secrets.GENERIC_PART_ID}}
+      FORM_PARAM_IDX: ${{secrets.FORM_PARAM_IDX}}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      
+      # Get the version number which is prefixed with the Github release branches in format release/{version}
+      - name: Get Release Version
+        run: |
+          branch=${GITHUB_REF##*/}
+          version=$(echo $branch | cut -d "/" -f2-)
+          echo "releaseVersion=$version" >> $GITHUB_ENV
+      
+      # Get Git latest short Sha# from the release branch used. This Sha# will be used in image tagging as well as DC Pod labelling.
+      - name: Get git commit short sha
+        id: sha
+        run: |
+          shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-7)
+          echo "gitsha=$shortSha" >> $GITHUB_ENV
+      
+      # Prints vital release paramters used
+      - name: Print Release Variables
+        run: |
+          echo "Release Application: ${{ github.event.inputs.app }}"
+          echo "Release Environment: ${{ github.event.inputs.env }}"
+          echo "Release Version: ${{ env.releaseVersion }}"
+          echo "Release Git Sha: ${{env.gitsha}}"
+
+      - name: Login to Artifactory
+        uses: docker/login-action@v1
+        with:
+          registry: artifacts.developer.gov.bc.ca
+          username: ${{ secrets.CCD_ARTIFACTORY_USERNAME }}
+          password: ${{ secrets.CCD_ARTIFACTORY_PASSWORD }}
+
+      # Set up JDK build environment
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+        
+      # Runs build steps
+      - name: Maven Package
+        run: mvn -ntp clean package
+        
+      - name: Maven Verify
+        run: mvn -ntp clean verify
+      
+      - name: Maven Spotless Check
+        run: mvn -ntp spotless:check
+
+      #Build image jag-ccd
+      - name: Build image jag-jci-application
+        env:
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
+          CONTEXT: ./jag-jci-application
+        run: |
+          docker build -t ${{github.event.inputs.app}}:${{env.gitsha}} ${CONTEXT}
+    
+  
+      #Push image jag-ccd to OpenShift Image stream - Silver
+      - name: Push Image jag-ccd to Openshift Image Stream - Silver
+        env:
+          IMAGE: artifacts.developer.gov.bc.ca/c52e-${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
+        run: |
+          docker tag ${{github.event.inputs.app}}:${{env.gitsha}} ${IMAGE}
+          docker push ${IMAGE}
+
+      - name: Checkout ArgoCD Repo
+        id: gitops
+        uses: actions/checkout@v4
+        with:
+          repository: bcgov-c/tenant-gitops-52e74e
+          ref: develop
+          token: ${{ secrets.ARGO_PAT }} # `ARGO_PAT` is a secret that contains your PAT
+          path: gitops
+
+      - name: Update Helm Values and Commit
+        id: helm
+        if: steps.gitops.outcome == 'success'  # Only run if the previous step (publish) was successful
+        run: |
+          # Clone the GitOps deployment configuration repository
+          # Navigate to the directory containing your Helm values file for the environment develop -> DEV, test -> test and 
+          cd gitops/charts
+
+          # Update the Helm values file with the new image tag and version
+          DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
+
+          sed -i "s/jcitag: .*/jcitag: dev # Image Updated on $DATETIME/" ../deploy/dev_values.yaml
+          sed -i "s/appVersion: .*/appVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/dev_values.yaml
+          
+          # Commit and push the changes
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          
+          git add .
+          
+          git add ../deploy/dev_values.yaml
+          
+          # Repackage Helm Chart      
+
+          cd ccd-gitops
+
+          helm dependency build
+          
+          cd charts
+
+          git add .
+          
+          git commit -m "Update Dev AI Reviewer API image tag"
+          git push origin develop  # Update the branch name as needed
+
+
+
+#   Uncomment Out Integration Tests if the intergration tests pass ( currently many of them fail)
+#      - name: Run Integration Tests
+#        env:
+#          TEST_STARTER_URL: ${{secrets.TEST_STARTER_URL}}
+#          BASIC_AUTH_USER: ${{secrets.BASIC_AUTH_USER}}
+#          BASIC_AUTH_PASS: ${{secrets.BASIC_AUTH_PASS}}
+#        run: |
+#          RET=`curl --write-out '%{content_type}' --output TestErrors.zip --request GET --user ${BASIC_AUTH_USER}:${BASIC_AUTH_PASS} --url ${TEST_STARTER_URL}`
+#          if [ "$RET" = "application/zip" ]; then
+#          echo "Status: Failed Integration Test(s) found!"
+#          exit 1
+#          fi
+#          if [[ "$RET" == *"json"* ]]; then
+#          echo "Status: All Tests Passed"
+#          fi
+#          if [ "$RET" != "application/zip" ] && [[ "$RET" != *"json"* ]]; then
+#          echo "Received content_type is $RET, was expecting json or zip"
+#          exit 1
+#          fi
+#
+#      - name: Archive production artifacts
+#        uses: actions/upload-artifact@v3.1.1
+#        if: failure()
+#        with:
+#          name: integration-tests-report
+#          path: |
+#            TestErrors.zip
+#          retention-days: 5
