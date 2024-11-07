@@ -1,6 +1,6 @@
 # This is the main workflow that creates a new image and push to Openshift image stream which in turn triggers the deployment
 
-name: Main - Build jag-jci Image and Push to Openshift Registry for Dev Deployment
+name: Main - Build jag-jci Image and Push to Artifactory for Dev Deployment
 
 # Controls when the workflow will run
 on:
@@ -95,8 +95,8 @@ jobs:
           docker build -t ${{github.event.inputs.app}}:${{env.gitsha}} ${CONTEXT}
     
   
-      #Push image jag-ccd to OpenShift Image stream - Silver
-      - name: Push Image jag-ccd to Openshift Image Stream - Silver
+      #Push image jag-ccd to Artifactory - Silver
+      - name: Push Image jag-ccd to Artifactory - Silver
         env:
           IMAGE: artifacts.developer.gov.bc.ca/c52e-${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
         run: |
@@ -124,7 +124,7 @@ jobs:
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
 
           sed -i "s/jcitag: .*/jcitag: dev # Image Updated on $DATETIME/" ../deploy/dev_values.yaml
-          sed -i "s/appVersion: .*/appVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/dev_values.yaml
+          sed -i "s/jciVersion: .*/jciVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/dev_values.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -144,7 +144,7 @@ jobs:
 
           git add .
           
-          git commit -m "Update Dev AI Reviewer API image tag"
+          git commit -m "Update Jag jci image tag"
           git push origin develop  # Update the branch name as needed
 
 

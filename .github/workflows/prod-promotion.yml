@@ -63,7 +63,7 @@ jobs:
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
 
           sed -i "s/jcitag: .*/jcitag: test # Image Updated on $DATETIME/" ../deploy/prod_values.yaml
-          sed -i "s/appVersion: .*/appVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/prod_values.yaml
+          sed -i "s/jciVersion: .*/jciVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/prod_values.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -83,7 +83,7 @@ jobs:
 
           git add .
           
-          git commit -m "Update Test AI Reviewer Admin image tag"
+          git commit -m "Update Jag jci image tag"
           git push origin test  # Update the branch name as needed
       
       - name: Update API Helm Values and Commit
@@ -98,7 +98,7 @@ jobs:
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
 
           sed -i "s/jcisecuretag: .*/jcisecuretag: test # Image Updated on $DATETIME/" ../deploy/prod_values.yaml
-          sed -i "s/appVersion: .*/appVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/prod_values.yaml
+          sed -i "s/jcisecureVersion: .*/jcisecureVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/prod_values.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -118,5 +118,5 @@ jobs:
 
           git add .
           
-          git commit -m "Update Test AI Reviewer API image tag"
+          git commit -m "Update Jag jci secure image tag"
           git push origin test  # Update the branch name as needed
