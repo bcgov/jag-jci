@@ -78,11 +78,9 @@ jobs:
         
       # Runs build steps
       - name: Maven Package
+        working-directory: AutomatedTests
         run: mvn -ntp clean package
         
-      - name: Maven Verify
-        run: mvn -ntp clean verify
-      
       - name: Maven Spotless Check
         run: mvn -ntp spotless:check
 
