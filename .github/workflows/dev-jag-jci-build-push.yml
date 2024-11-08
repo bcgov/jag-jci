@@ -98,7 +98,7 @@ jobs:
       #Push image jag-ccd to Artifactory - Silver
       - name: Push Image jag-ccd to Artifactory - Silver
         env:
-          IMAGE: artifacts.developer.gov.bc.ca/c52e-${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
+          IMAGE: artifacts.developer.gov.bc.ca/c52e-jag-jci-application/${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
         run: |
           docker tag ${{github.event.inputs.app}}:${{env.gitsha}} ${IMAGE}
           docker push ${IMAGE}

@@ -1,6 +1,6 @@
 # This is the main workflow that creates a new image and push to Openshift image stream which in turn triggers the deployment
 
-name: Main - Build jag-jci Image and Push to Artifactory for Dev Deployment
+name: Main - Build jag-jci-secure Image and Push to Artifactory for Dev Deployment
 
 # Controls when the workflow will run
 on:
@@ -98,7 +98,7 @@ jobs:
       #Push image jag-jci-application-secure to Artifactory - Silver
       - name: Push Image jag-jci-application-secure to Artifactory - Silver
         env:
-          IMAGE: artifacts.developer.gov.bc.ca/c52e-${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
+          IMAGE: artifacts.developer.gov.bc.ca/c52e-jag-jci-application-secure/${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
         run: |
           docker tag ${{github.event.inputs.app}}:${{env.gitsha}} ${IMAGE}
           docker push ${IMAGE}
