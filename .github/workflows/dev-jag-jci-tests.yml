@@ -86,18 +86,23 @@ jobs:
       - name: Maven Spotless Check
         run: mvn -ntp spotless:check
 
-      #Build and push image to Artifactory - Silver
-      - name: Build & Push Image to Artifactory - Silver
+
+      - name: Build image jag-jci-tests
         env:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
           CONTEXT: ./AutomatedTests
-          IMAGE: artifacts.developer.gov.bc.ca/c52e-${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
         run: |
-          docker build \
-            --tag ${IMAGE} \
-            ${CONTEXT}
-            docker push ${IMAGE}
+          docker build -t ${{github.event.inputs.app}}:${{env.gitsha}} ${CONTEXT}
+    
+  
+      #Push image jag-jci-tests to Artifactory - Silver
+      - name: Push Image jag-jci-tests to Artifactory - Silver
+        env:
+          IMAGE: artifacts.developer.gov.bc.ca/jag-jci-tests/${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
+        run: |
+          docker tag ${{github.event.inputs.app}}:${{env.gitsha}} ${IMAGE}
+          docker push ${IMAGE}
 
       - name: Checkout ArgoCD Repo
         id: gitops
