@@ -77,6 +77,7 @@ jobs:
         
       # Runs build steps
       - name: Maven Package
+        working-directory: AutomatedTests
         run: mvn -ntp clean package
         
       - name: Maven Verify
