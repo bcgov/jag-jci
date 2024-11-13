@@ -80,7 +80,7 @@ jobs:
       - name: Maven Package
         working-directory: AutomatedTests
         run: mvn -ntp clean package
-      
+        
       - name: Maven Spotless Check
         run: mvn -ntp spotless:check
 
@@ -97,7 +97,7 @@ jobs:
       #Push image jag-jci-tests to Artifactory - Silver
       - name: Push Image jag-jci-tests to Artifactory - Silver
         env:
-          IMAGE: artifacts.developer.gov.bc.ca/jag-jci-tests/${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
+          IMAGE: artifacts.developer.gov.bc.ca/c52e-jag-jci-tests/${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
         run: |
           docker tag ${{github.event.inputs.app}}:${{env.gitsha}} ${IMAGE}
           docker push ${IMAGE}
