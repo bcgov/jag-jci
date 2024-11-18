@@ -123,8 +123,8 @@ jobs:
           # Update the Helm values file with the new image tag and version
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
 
-          sed -i "s/jcitag: .*/jcitag: dev # Image Updated on $DATETIME/" ../deploy/dev_values.yaml
-          sed -i "s/jciVersion: .*/jciVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/dev_values.yaml
+          sed -i "s/jcitag: .*/jcitag: dev # Image Updated on $DATETIME/" ../deploy/dev_values_jci.yaml
+          sed -i "s/jciVersion: .*/jciVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/dev_values_jci.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -132,11 +132,11 @@ jobs:
           
           git add .
           
-          git add ../deploy/dev_values.yaml
+          git add ../deploy/dev_values_jci.yaml
           
           # Repackage Helm Chart      
 
-          cd ccd-gitops
+          cd jci-gitops
 
           helm dependency build
           
