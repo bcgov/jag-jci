@@ -17,6 +17,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Get the version number which is prefixed with the Github release branches in format release/{version}
+      - name: Get Release Version
+        run: |
+          branch=${GITHUB_REF##*/}
+          version=$(echo $branch | cut -d "/" -f2-)
+          echo "releaseVersion=$version" >> $GITHUB_ENV
+      
+      # Get Git latest short Sha# from the release branch used. This Sha# will be used in image tagging as well as DC Pod labelling.
+      - name: Get git commit short sha
+        id: sha
+        run: |
+          shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-7)
+          echo "gitsha=$shortSha" >> $GITHUB_ENV
+      
+      # Prints vital release paramters used
+      - name: Print Release Variables
+        run: |
+          echo "Release Application: ${{ github.event.inputs.app }}"
+          echo "Release Version: ${{ env.releaseVersion }}"
+          echo "Release Git Sha: ${{env.gitsha}}"
+      
+
       - name: Login to Artifactory
         uses: docker/login-action@v1
         with:
@@ -35,12 +57,6 @@ jobs:
         run: |
           docker push artifacts.developer.gov.bc.ca/c52e-${{ github.event.inputs.application }}/${{ github.event.inputs.application }}:test
 
-      # Get SHORT_SHA for the version
-      - name: Get short SHA
-        id: short_sha
-        run: |
-          echo "::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)"
-          echo "Short SHA: $SHORT_SHA"
 
       - name: Checkout ArgoCD Repo
         id: gitops
@@ -62,8 +78,8 @@ jobs:
           # Update the Helm values file with the new image tag and version
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
 
-          sed -i "s/jcitag: .*/jcitag: test # Image Updated on $DATETIME/" ../deploy/test_values.yaml
-          sed -i "s/jciVersion: .*/jciVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/test_values.yaml
+          sed -i "s/jcitag: .*/jcitag: test # Image Updated on $DATETIME/" ../deploy/test_values_jci.yaml
+          sed -i "s/jciVersion: .*/jciVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/test_values_jci.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -71,11 +87,11 @@ jobs:
           
           git add .
           
-          git add ../deploy/test_values.yaml
+          git add ../deploy/test_values_jci.yaml
           
           # Repackage Helm Chart      
 
-          cd ccd-gitops
+          cd jci-gitops
 
           helm dependency build
           
@@ -97,8 +113,8 @@ jobs:
           # Update the Helm values file with the new image tag and version
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
 
-          sed -i "s/jcisecuretag: .*/jcisecuretag: test # Image Updated on $DATETIME/" ../deploy/test_values.yaml
-          sed -i "s/jcisecureVersion: .*/jcisecureVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/test_values.yaml
+          sed -i "s/jcisecuretag: .*/jcisecuretag: test # Image Updated on $DATETIME/" ../deploy/test_values_jci.yaml
+          sed -i "s/jcisecureVersion: .*/jcisecureVersion: ${{ env.releaseVersion }}.${{ env.gitsha }} # Version Updated on $DATETIME/" ../deploy/test_values_jci.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -106,11 +122,11 @@ jobs:
           
           git add .
           
-          git add ../deploy/test_values.yaml
+          git add ../deploy/test_values_jci.yaml
           
           # Repackage Helm Chart      
 
-          cd ccd-gitops
+          cd jci-gitops
 
           helm dependency build
           
