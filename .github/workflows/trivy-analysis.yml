@@ -55,10 +55,10 @@ jobs:
           image-ref: docker.io/jci/jag-jci-application:${{ github.sha }}
           format: sarif
           output: trivy-results.sarif
-          exit-code: 0
+          exit-code: 1
           ignore-unfixed: true
+          limit-severities-for-sarif: true
           severity: HIGH,CRITICAL
-          timeout: 15m
       
       - name: Build image jag-jci-application-secure from Dockerfile
         env:
@@ -76,10 +76,10 @@ jobs:
           image-ref: docker.io/jci/jag-jci-application-secure:${{ github.sha }}
           format: sarif
           output: trivy-results.sarif
-          exit-code: 0
+          exit-code: 1
           ignore-unfixed: true
+          limit-severities-for-sarif: true
           severity: HIGH,CRITICAL
-          timeout: 15m
 
       #Upload results to the Github security tab.
       - name: Upload Trivy scan results to GitHub Security tab
