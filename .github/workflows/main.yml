@@ -191,7 +191,7 @@ jobs:
 #          fi
 #
 #      - name: Archive production artifacts
-#        uses: actions/upload-artifact@v3.1.1
+#        uses: actions/upload-artifact@4
 #        if: failure()
 #        with:
 #          name: integration-tests-report
