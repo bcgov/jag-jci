@@ -24,7 +24,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.Base64Utils;
+import java.util.Base64;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -134,7 +134,7 @@ public class DocumentController {
                                 byte[].class);
 
                 String bs64 =
-                        resp2.getBody() != null ? Base64Utils.encodeToString(resp2.getBody()) : "";
+                        resp2.getBody() != null ? Base64.getEncoder().encodeToString(resp2.getBody()) : "";
 
                 var out = new GetDocumentResponse();
                 var one = new DocumentResult();
