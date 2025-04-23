@@ -97,7 +97,7 @@ jobs:
           git add .
           
           git commit -m "Update Jag jci image tag"
-          git push origin stage  # Update the branch name as needed
+          git push origin main  # Update the branch name as needed
       
       - name: Update API Helm Values and Commit
         id: helm-api
@@ -132,4 +132,4 @@ jobs:
           git add .
           
           git commit -m "Update Jag jci secure image tag"
-          git push origin stage  # Update the branch name as needed
+          git push origin main  # Update the branch name as needed
