@@ -43,6 +43,13 @@ jobs:
           registry: artifacts.developer.gov.bc.ca
           username: ${{ secrets.CCD_ARTIFACTORY_USERNAME }}
           password: ${{ secrets.CCD_ARTIFACTORY_PASSWORD }}
+      
+      - name: Docker Backup Prod
+        working-directory: ${{env.WORKING_DIRECTORY}}
+        run: |
+          docker pull artifacts.developer.gov.bc.ca/c52e-${{ github.event.inputs.application }}/${{ github.event.inputs.application }}:prod
+          docker tag artifacts.developer.gov.bc.ca/c52e-${{ github.event.inputs.application }}/${{ github.event.inputs.application }}:prod artifacts.developer.gov.bc.ca/c52e-${{ github.event.inputs.application }}/${{ github.event.inputs.application }}:prod-backup
+          docker push artifacts.developer.gov.bc.ca/c52e-${{ github.event.inputs.application }}/${{ github.event.inputs.application }}:prod-backup
 
       - name: Docker Pull Dev Image from Artifactory
         working-directory: ${{env.WORKING_DIRECTORY}}
