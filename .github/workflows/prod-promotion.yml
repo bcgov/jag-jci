@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: bcgov-c/tenant-gitops-52e74e
-          ref: main
+          ref: stage
           token: ${{ secrets.ARGO_PAT }} # `GH_PAT` is a secret that contains your PAT
           path: gitops
 
@@ -97,7 +97,7 @@ jobs:
           git add .
           
           git commit -m "Update Jag jci image tag"
-          git push origin main  # Update the branch name as needed
+          git push origin stage  # Update the branch name as needed
       
       - name: Update API Helm Values and Commit
         id: helm-api
@@ -132,4 +132,4 @@ jobs:
           git add .
           
           git commit -m "Update Jag jci secure image tag"
-          git push origin main  # Update the branch name as needed
+          git push origin stage  # Update the branch name as needed
