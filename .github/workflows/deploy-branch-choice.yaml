@@ -1,0 +1,53 @@
+name: Main - Build Choice Branch
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'App Name (jag-jci-application-secure)'
+        required: true
+        default: 'jag-jci-application-secure'
+      env:
+        type: choice
+        description: Image Target environment
+        options: 
+        - dev
+        - test
+        - prod
+        required: true
+        default: 'dev'
+      branch:
+        description: 'Branch'
+        required: true
+        default: 'main'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-push-image:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env }}
+    env:
+      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+      BASIC_AUTH_PASS: ${{ secrets.BASIC_AUTH_PASS }}
+      GENERIC_AGENCY_ID: ${{secrets.GENERIC_AGENCY_ID}}
+      GENERIC_PART_ID: ${{secrets.GENERIC_PART_ID}}
+      FORM_PARAM_IDX: ${{secrets.FORM_PARAM_IDX}}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      
+      # Get the version number which is prefixed with the Github release branches in format release/{version}
+      - name: Get Release Version
+        run: |
+          branch=${{ github.event.inputs.branch }}
+          version=$(echo $branch | cut -d "/" -f2-)
+          echo "releaseVersion=$version" >> $GITHUB_ENV
+      
+
