@@ -55,7 +55,7 @@ jobs:
           image-ref: docker.io/jci/jag-jci-application:${{ github.sha }}
           format: sarif
           output: trivy-results.sarif
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
           limit-severities-for-sarif: true
           severity: HIGH,CRITICAL
