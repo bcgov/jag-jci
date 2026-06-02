@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /cc/
+*.versionBackup
+
 ### STS ###
 .apt_generated
 .classpath
@@ -32,6 +34,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Automation Tests ###
 /AutomatedTests/node_modules/
 /AutomatedTests/cypress/videos/
 /AutomatedTests/cypress/screenshots/

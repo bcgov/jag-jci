@@ -10,7 +10,7 @@
     </parent>
     <groupId>ca.bc.gov.open</groupId>
     <artifactId>jag-jci</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.4-SNAPSHOT</version>
     <name>jag-jci</name>
     <description>JC Interface Application</description>
     <properties>
