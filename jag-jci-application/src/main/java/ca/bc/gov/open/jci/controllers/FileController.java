@@ -1,7 +1,9 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.civil.*;
-import ca.bc.gov.open.jci.common.criminal.file.content.*;
+import ca.bc.gov.open.jci.civil.GetCivilFileContent;
+import ca.bc.gov.open.jci.civil.GetCivilFileContentResponse;
+import ca.bc.gov.open.jci.common.criminal.file.content.GetCriminalFileContent;
+import ca.bc.gov.open.jci.common.criminal.file.content.GetCriminalFileContentResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;

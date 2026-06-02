@@ -1,8 +1,9 @@
 package ca.bc.gov.open.jci;
 
-import static org.mockito.Mockito.when;
-
-import ca.bc.gov.open.jci.common.process.results.*;
+import ca.bc.gov.open.jci.common.process.results.GetHealth;
+import ca.bc.gov.open.jci.common.process.results.GetHealthResponse;
+import ca.bc.gov.open.jci.common.process.results.GetPing;
+import ca.bc.gov.open.jci.common.process.results.GetPingResponse;
 import ca.bc.gov.open.jci.controllers.HealthController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,13 +14,13 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+
+import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class HealthControllerTests {

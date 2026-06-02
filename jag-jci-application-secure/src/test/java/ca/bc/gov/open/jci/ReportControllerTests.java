@@ -1,38 +1,44 @@
 package ca.bc.gov.open.jci;
 
-import static org.mockito.Mockito.when;
-
 import ca.bc.gov.open.jci.common.rop.report.secure.GetROPReportSecure;
 import ca.bc.gov.open.jci.common.rop.report.secure.RopSecureRequest;
 import ca.bc.gov.open.jci.controllers.ReportController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mockito.Mockito.when;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReportControllerTests {
 
-    @Autowired private ObjectMapper objectMapper;
+    @Mock private ObjectMapper objectMapper;
+    @Mock private RestTemplate restTemplate;
+    @Mock private ReportController reportController;
 
-    @Mock private RestTemplate restTemplate = new RestTemplate();
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        reportController = Mockito.spy(new ReportController(restTemplate, objectMapper));
+    }
 
     @Test
     public void getRopReportSecureTest() throws JsonProcessingException {
@@ -76,7 +82,6 @@ public class ReportControllerTests {
                         Mockito.<Class<byte[]>>any()))
                 .thenReturn(responseEntity);
 
-        ReportController reportController = new ReportController(restTemplate, objectMapper);
         var resp = reportController.getRopReportSecure(req);
 
         Assertions.assertNotNull(resp);

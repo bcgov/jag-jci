@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.court.one.*;
+import ca.bc.gov.open.jci.court.one.GetCrtList;
+import ca.bc.gov.open.jci.court.one.GetCrtListResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;

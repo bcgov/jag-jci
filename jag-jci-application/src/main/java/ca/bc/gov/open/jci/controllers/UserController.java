@@ -1,7 +1,13 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.common.user.login.*;
-import ca.bc.gov.open.jci.common.user.mapping.*;
+import ca.bc.gov.open.jci.common.user.login.GetUserLogin;
+import ca.bc.gov.open.jci.common.user.login.GetUserLoginRequestType;
+import ca.bc.gov.open.jci.common.user.login.GetUserLoginResponse;
+import ca.bc.gov.open.jci.common.user.login.GetUserLoginResponseType;
+import ca.bc.gov.open.jci.common.user.mapping.GetParticipantInfo;
+import ca.bc.gov.open.jci.common.user.mapping.GetParticipantInfoResponse;
+import ca.bc.gov.open.jci.common.user.mapping.MapGuidToParticipant;
+import ca.bc.gov.open.jci.common.user.mapping.MapGuidToParticipantResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;

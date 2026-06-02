@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.court.secure.one.*;
+import ca.bc.gov.open.jci.court.secure.one.GetCrtListSecure;
+import ca.bc.gov.open.jci.court.secure.one.GetCrtListSecureResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;

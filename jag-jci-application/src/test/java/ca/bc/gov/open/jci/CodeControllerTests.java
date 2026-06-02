@@ -1,10 +1,9 @@
 package ca.bc.gov.open.jci;
 
-import static org.mockito.Mockito.when;
-
-import ca.bc.gov.open.jci.common.code.values.*;
 import ca.bc.gov.open.jci.common.code.values.CodeValue;
 import ca.bc.gov.open.jci.common.code.values.CodeValues;
+import ca.bc.gov.open.jci.common.code.values.GetCodeValues;
+import ca.bc.gov.open.jci.common.code.values.GetCodeValuesResponse;
 import ca.bc.gov.open.jci.controllers.CodeController;
 import ca.bc.gov.open.jci.models.serializers.InstantDeserializer;
 import ca.bc.gov.open.jci.models.serializers.InstantSerializer;
@@ -13,14 +12,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import java.io.IOException;
-import java.net.URI;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Locale;
-import javax.xml.transform.TransformerConfigurationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,14 +19,21 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+
+import javax.xml.transform.TransformerConfigurationException;
+import java.io.IOException;
+import java.net.URI;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CodeControllerTests {

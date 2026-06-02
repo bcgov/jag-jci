@@ -1,7 +1,5 @@
 package ca.bc.gov.open.jci;
 
-import static org.mockito.Mockito.when;
-
 import ca.bc.gov.open.jci.common.dev.utils.ClearAppearanceResults;
 import ca.bc.gov.open.jci.common.dev.utils.ClearAppearanceResultsResponse;
 import ca.bc.gov.open.jci.common.dev.utils.RecreateCourtList;
@@ -16,14 +14,13 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+
+import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DevUtilsControlTests {
