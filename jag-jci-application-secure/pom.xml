@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>jag-jci-application-secure</artifactId>
-    <version>1.0</version>
     <name>jag-jci-application-secure</name>
     <description>jag-jci-application-secure</description>
     <properties>
@@ -186,31 +185,31 @@
         <dependency>
             <groupId>ca.bc.gov.open</groupId>
             <artifactId>jci-common-models</artifactId>
-            <version>1.0</version>
+            <version>2.0.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ca.bc.gov.open</groupId>
             <artifactId>jci-civil-models</artifactId>
-            <version>1.0</version>
+            <version>2.0.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ca.bc.gov.open</groupId>
             <artifactId>jci-civil-secure-models</artifactId>
-            <version>1.0</version>
+            <version>2.0.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ca.bc.gov.open</groupId>
             <artifactId>jci-court-list-models</artifactId>
-            <version>1.0</version>
+            <version>2.0.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>ca.bc.gov.open</groupId>
             <artifactId>jci-court-list-secure-models</artifactId>
-            <version>1.0</version>
+            <version>2.0.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

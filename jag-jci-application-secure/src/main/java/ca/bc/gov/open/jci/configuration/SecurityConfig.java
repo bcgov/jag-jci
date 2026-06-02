@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 authorizeRequests -> {
                     authorizeRequests
-                        .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated();
                 });
 
@@ -48,9 +50,7 @@ public class SecurityConfig {
                 });
 
         http.csrf(
-                httpSecurityCsrfConfigurer -> {
-                    httpSecurityCsrfConfigurer.disable();
-                });
+                AbstractHttpConfigurer::disable);
 
         return http.build();
     }
