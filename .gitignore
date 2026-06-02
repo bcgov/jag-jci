@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /cc/
-*.versionBackup
+*.versionsBackup
 
 ### STS ###
 .apt_generated
