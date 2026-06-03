@@ -1,7 +1,8 @@
 # This is the workflow that creates a new automation test api image and push to Openshift image stream which in turn triggers the deployment
 
 name: AutomationTestAPI - Build Image and Push to Openshift Registry for Dev Deployment
-
+permissions:
+  contents: read
 # Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab

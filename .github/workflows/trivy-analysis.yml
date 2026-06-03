@@ -1,7 +1,8 @@
 # This workflow is used to build & scan image using trivy vulnerability scanner and upload the results to github security tab
 
 name: Build & Vulnerability Scan using Trivy Scanner
-
+permissions:
+  contents: write
 on:
   push:
     branches: [ main ]
