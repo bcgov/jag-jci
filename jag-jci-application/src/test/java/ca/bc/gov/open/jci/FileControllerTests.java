@@ -1,40 +1,11 @@
 package ca.bc.gov.open.jci;
 
-import static org.mockito.Mockito.when;
-
 import ca.bc.gov.open.jci.civil.*;
-import ca.bc.gov.open.jci.civil.CivilFileContentDoc;
-import ca.bc.gov.open.jci.civil.CivilFileType;
-import ca.bc.gov.open.jci.civil.CounselType;
-import ca.bc.gov.open.jci.civil.CourtParticipantType;
-import ca.bc.gov.open.jci.civil.DocumentHearingType;
-import ca.bc.gov.open.jci.civil.FiledByType;
-import ca.bc.gov.open.jci.civil.GeneralAttendeeType;
-import ca.bc.gov.open.jci.civil.IssueType;
-import ca.bc.gov.open.jci.civil.PartyInterestType;
-import ca.bc.gov.open.jci.civil.PreviousAppearanceType;
-import ca.bc.gov.open.jci.civil.ReferenceDocInterest;
-import ca.bc.gov.open.jci.civil.ReferenceDocumentType;
-import ca.bc.gov.open.jci.civil.SpecialProgramType;
 import ca.bc.gov.open.jci.common.criminal.file.content.*;
-import ca.bc.gov.open.jci.common.criminal.file.content.AccusedFileType;
-import ca.bc.gov.open.jci.common.criminal.file.content.AppearanceCountTypes;
-import ca.bc.gov.open.jci.common.criminal.file.content.AppearanceTypes;
-import ca.bc.gov.open.jci.common.criminal.file.content.ArrestWarrantType;
-import ca.bc.gov.open.jci.common.criminal.file.content.BanTypes;
-import ca.bc.gov.open.jci.common.criminal.file.content.CFCOrderType;
 import ca.bc.gov.open.jci.common.criminal.file.content.DocumentType;
-import ca.bc.gov.open.jci.common.criminal.file.content.FileContentDoc;
-import ca.bc.gov.open.jci.common.criminal.file.content.HearingRestrictionType;
-import ca.bc.gov.open.jci.common.criminal.file.content.PartyAppearanceMethodType;
-import ca.bc.gov.open.jci.common.criminal.file.content.ProtectionOrderType;
-import ca.bc.gov.open.jci.common.criminal.file.content.SentenceType;
 import ca.bc.gov.open.jci.controllers.FileController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.URI;
-import java.time.Instant;
-import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,14 +13,16 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.time.Instant;
+
+import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FileControllerTests {

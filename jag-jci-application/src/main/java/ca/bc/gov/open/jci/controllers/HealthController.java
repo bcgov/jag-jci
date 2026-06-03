@@ -1,6 +1,9 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.common.process.results.*;
+import ca.bc.gov.open.jci.common.process.results.GetHealth;
+import ca.bc.gov.open.jci.common.process.results.GetHealthResponse;
+import ca.bc.gov.open.jci.common.process.results.GetPing;
+import ca.bc.gov.open.jci.common.process.results.GetPingResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;

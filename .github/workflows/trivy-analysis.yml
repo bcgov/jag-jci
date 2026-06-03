@@ -1,13 +1,11 @@
 # This workflow is used to build & scan image using trivy vulnerability scanner and upload the results to github security tab
 
 name: Build & Vulnerability Scan using Trivy Scanner
-
+permissions:
+  contents: write
 on:
   push:
-    branches: [ main, release/* ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ main, release/*]
+    branches: [ main ]
   workflow_dispatch:
     branches: [ main, release/*, feature/*]
 
@@ -39,7 +37,7 @@ jobs:
       - name: Maven Verify
         run: mvn -ntp clean verify
 
-      - name: Build image jag-jci-application from Dockerfile
+      - name: Build image jag-jci-application from Dockerfile.jag-jci-application
         env:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
@@ -60,7 +58,7 @@ jobs:
           limit-severities-for-sarif: true
           severity: HIGH,CRITICAL
       
-      - name: Build image jag-jci-application-secure from Dockerfile
+      - name: Build image jag-jci-application-secure from Dockerfile.jag-jci-application-secure
         env:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1

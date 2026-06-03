@@ -1,13 +1,13 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.common.code.values.*;
+import ca.bc.gov.open.jci.common.code.values.GetCodeValues;
+import ca.bc.gov.open.jci.common.code.values.GetCodeValuesResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;
 import ca.bc.gov.open.jci.models.serializers.InstantSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.xml.transform.TransformerConfigurationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +23,8 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
+
+import javax.xml.transform.TransformerConfigurationException;
 
 @Slf4j
 @Endpoint

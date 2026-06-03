@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jci.controllers;
 
-import ca.bc.gov.open.jci.common.code.values.secure.*;
+import ca.bc.gov.open.jci.common.code.values.secure.GetCodeValuesSecure;
+import ca.bc.gov.open.jci.common.code.values.secure.GetCodeValuesSecureResponse;
 import ca.bc.gov.open.jci.exceptions.ORDSException;
 import ca.bc.gov.open.jci.models.OrdsErrorLog;
 import ca.bc.gov.open.jci.models.RequestSuccessLog;
