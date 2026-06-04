@@ -1,23 +1,14 @@
 # This is the main workflow that creates a new image and push to Openshift image stream which in turn triggers the deployment
 
 name: Main - Build jag-jci-secure Image and Push to Artifactory for Dev Deployment
-
+permissions:
+  contents: write
 # Controls when the workflow will run
 on:
+  push:
+    branches: 'main'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      app:
-        description: 'App Name (jag-jci-application-secure)'
-        required: true
-        default: 'jag-jci-application-secure'
-      env:
-        type: choice
-        description: Image Target environment
-        options: 
-        - dev    
-        required: true
-        default: 'dev'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,13 +16,6 @@ jobs:
   build-push-image:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.env }}
-    env:
-      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
-      BASIC_AUTH_PASS: ${{ secrets.BASIC_AUTH_PASS }}
-      GENERIC_AGENCY_ID: ${{secrets.GENERIC_AGENCY_ID}}
-      GENERIC_PART_ID: ${{secrets.GENERIC_PART_ID}}
-      FORM_PARAM_IDX: ${{secrets.FORM_PARAM_IDX}}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -56,8 +40,6 @@ jobs:
       # Prints vital release paramters used
       - name: Print Release Variables
         run: |
-          echo "Release Application: ${{ github.event.inputs.app }}"
-          echo "Release Environment: ${{ github.event.inputs.env }}"
           echo "Release Version: ${{ env.releaseVersion }}"
           echo "Release Git Sha: ${{env.gitsha}}"
 
@@ -68,31 +50,10 @@ jobs:
           username: ${{ secrets.CCD_ARTIFACTORY_USERNAME }}
           password: ${{ secrets.CCD_ARTIFACTORY_PASSWORD }}
 
-      # Set up JDK build environment
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-        
-      # Runs build steps
-      - name: Maven Package
-        run: mvn -ntp clean package
-        
-      - name: Maven Verify
-        run: mvn -ntp clean verify
-      
-      - name: Maven Spotless Check
-        run: mvn -ntp spotless:check
-
       #Build image jag-jci-application-secure
       - name: Build image jag-jci-application-secure
-        env:
-          COMPOSE_DOCKER_CLI_BUILD: 1
-          DOCKER_BUILDKIT: 1
-          CONTEXT: ./jag-jci-application-secure
         run: |
-          docker build -t ${{github.event.inputs.app}}:${{env.gitsha}} ${CONTEXT}
+          docker build -t ${{github.event.inputs.app}}:${{env.gitsha}} -f Dockerfile.jag-jci-application-secure .
     
   
       #Push image jag-jci-application-secure to Artifactory - Silver
@@ -146,34 +107,3 @@ jobs:
           
           git commit -m "Update Jag jci secure image tag"
           git push origin develop  # Update the branch name as needed
-
-
-
-#   Uncomment Out Integration Tests if the intergration tests pass ( currently many of them fail)
-#      - name: Run Integration Tests
-#        env:
-#          TEST_STARTER_URL: ${{secrets.TEST_STARTER_URL}}
-#          BASIC_AUTH_USER: ${{secrets.BASIC_AUTH_USER}}
-#          BASIC_AUTH_PASS: ${{secrets.BASIC_AUTH_PASS}}
-#        run: |
-#          RET=`curl --write-out '%{content_type}' --output TestErrors.zip --request GET --user ${BASIC_AUTH_USER}:${BASIC_AUTH_PASS} --url ${TEST_STARTER_URL}`
-#          if [ "$RET" = "application/zip" ]; then
-#          echo "Status: Failed Integration Test(s) found!"
-#          exit 1
-#          fi
-#          if [[ "$RET" == *"json"* ]]; then
-#          echo "Status: All Tests Passed"
-#          fi
-#          if [ "$RET" != "application/zip" ] && [[ "$RET" != *"json"* ]]; then
-#          echo "Received content_type is $RET, was expecting json or zip"
-#          exit 1
-#          fi
-#
-#      - name: Archive production artifacts
-#        uses: actions/upload-artifact@v4
-#        if: failure()
-#        with:
-#          name: integration-tests-report
-#          path: |
-#            TestErrors.zip
-#          retention-days: 5

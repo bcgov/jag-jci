@@ -1,7 +1,8 @@
 # This is the main workflow that creates a new image and push to Openshift image stream which in turn triggers the deployment
 
 name: AutomationTestAPI - Build Image and Push to Artifactory for Dev Deployment
-
+permissions:
+  contents: write
 # Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -59,8 +60,6 @@ jobs:
           echo "Release Environment: ${{ github.event.inputs.env }}"
           echo "Release Version: ${{ env.releaseVersion }}"
           echo "Release Git Sha: ${{env.gitsha}}"
-
-
 
       - name: Login to Artifactory
         uses: docker/login-action@v1
