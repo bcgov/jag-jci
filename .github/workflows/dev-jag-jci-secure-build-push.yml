@@ -53,16 +53,13 @@ jobs:
       #Build image jag-jci-application-secure
       - name: Build image jag-jci-application-secure
         run: |
-          docker build -t ${{github.event.inputs.app}}:${{env.gitsha}} -f Dockerfile.jag-jci-application-secure .
+          docker build -t artifacts.developer.gov.bc.ca/c52e-jag-jci-application-secure/jag-jci-application-secure:dev -f Dockerfile.jag-jci-application-secure .
     
   
       #Push image jag-jci-application-secure to Artifactory - Silver
       - name: Push Image jag-jci-application-secure to Artifactory - Silver
-        env:
-          IMAGE: artifacts.developer.gov.bc.ca/c52e-jag-jci-application-secure/${{github.event.inputs.app}}:${{secrets.OPENSHIFT_ENV_TAG}}
         run: |
-          docker tag ${{github.event.inputs.app}}:${{env.gitsha}} ${IMAGE}
-          docker push ${IMAGE}
+          docker push artifacts.developer.gov.bc.ca/c52e-jag-jci-application-secure/jag-jci-application-secure:dev
 
       - name: Checkout ArgoCD Repo
         id: gitops
